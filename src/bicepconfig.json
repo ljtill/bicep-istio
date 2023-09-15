@@ -6,6 +6,9 @@
       "rules": {
         "no-unused-params": {
           "level": "off"
+        },
+        "no-loc-expr-outside-params": {
+          "level": "off"
         }
       }
     }
