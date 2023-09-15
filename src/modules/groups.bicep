@@ -8,11 +8,18 @@ targetScope = 'subscription'
 // Resources
 // ---------
 
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: settings.resourceGroups[0].name
-  location: settings.resourceGroups[0].location
+resource services 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: settings.resourceGroups.services.name
+  location: settings.resourceGroups.services.location
   properties: {}
-  tags: settings.resourceGroups[0].tags
+  tags: settings.resourceGroups.services.tags
+}
+
+resource clusters 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+  name: settings.resourceGroups.clusters.name
+  location: settings.resourceGroups.clusters.location
+  properties: {}
+  tags: settings.resourceGroups.clusters.tags
 }
 
 // ----------
