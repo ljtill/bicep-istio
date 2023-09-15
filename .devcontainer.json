@@ -1,13 +1,15 @@
 {
-    "name": "Scaffold",
+    "name": "Istio",
     "image": "mcr.microsoft.com/devcontainers/base:jammy",
     "features": {
         "ghcr.io/devcontainers/features/azure-cli:1": {
-            "installBicep": true
+            "installBicep": true,
+            "extensions": [
+                "aks-preview"
+            ]
         },
-        "ghcr.io/devcontainers/features/powershell:1": {
-            "modules": "Az"
-        }
+        "ghcr.io/ljtill/features/kubectl:1": {},
+        "ghcr.io/ljtill/features/istioctl:1": {}
     },
     "customizations": {
         "vscode": {
