@@ -1,9 +1,11 @@
-# Azure Service Mesh
+# Istio
 
 This repository contains the infra-as-code components to quickly scaffold a new
 Azure Kubernetes Service cluster with Istio service mesh.
 
 _Please note these artifacts are under development and subject to change._
+
+---
 
 ```bash
 az stack sub list
