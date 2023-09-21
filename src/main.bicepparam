@@ -16,6 +16,23 @@ param settings = {
       }
       tags: {}
     }
+    identities: {
+      name: ''
+      location: 'uksouth'
+      resources: {
+        managedIdentity: {
+          kubernetes: {
+            name: ''
+          }
+          kubelet: {
+            name: ''
+          }
+          script: {
+            name: ''
+          }
+        }
+      }
+    }
     clusters: {
       name: ''
       location: 'uksouth'
@@ -23,6 +40,9 @@ param settings = {
         containerService: {
           name: ''
           tags: {}
+          properties: {
+            serviceMesh: 'Istio' // Istio || ASM || None
+          }
         }
       }
       tags: {}
