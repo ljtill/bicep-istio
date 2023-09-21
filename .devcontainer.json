@@ -8,6 +8,7 @@
                 "aks-preview"
             ]
         },
+        "ghcr.io/ljtill/features/helm:1": {},
         "ghcr.io/ljtill/features/kubectl:1": {},
         "ghcr.io/ljtill/features/istioctl:1": {}
     },
