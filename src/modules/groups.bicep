@@ -8,13 +8,6 @@ targetScope = 'subscription'
 // Resources
 // ---------
 
-resource identities 'Microsoft.Resources/resourceGroups@2023-07-01' = {
-  name: settings.resourceGroups.identities.name
-  location: settings.resourceGroups.identities.location
-  properties: {}
-  tags: settings.resourceGroups.clusters.tags
-}
-
 resource clusters 'Microsoft.Resources/resourceGroups@2023-07-01' = {
   name: settings.resourceGroups.clusters.name
   location: settings.resourceGroups.clusters.location
