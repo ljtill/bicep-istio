@@ -39,7 +39,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   kube((Kubernetes)) -->
-    ns((Namespace)) --> aks-istio-system
+    ns((Namespaces)) --> aks-istio-system
 
       aks-istio-system -->
         pods((Pods)) --> istiod-asm-1-17-abc
@@ -55,10 +55,10 @@ flowchart LR
         rs((ReplicaSets)) --> replicaset[istiod-asm-1-17-xxx]
 
       aks-istio-system -->
-        as((PodAutoscaler)) --> autoscaler[istiod-asm-1-17]
+        as((PodAutoscalers)) --> autoscaler[istiod-asm-1-17]
 
-    ns((Namespace)) --> aks-istio-ingress
-    ns((Namespace)) --> aks-istio-egress
+    ns((Namespaces)) --> aks-istio-ingress
+    ns((Namespaces)) --> aks-istio-egress
 
   kube((Kubernetes)) -->
     node((Nodes)) --> aks-system-xxx
