@@ -18,25 +18,12 @@ module groups './modules/groups.bicep' = {
 }
 
 // Resources
-module identities './modules/identities/resources.bicep' = {
-  name: 'Microsoft.Resources.Identities'
-  scope: resourceGroup(settings.resourceGroups.identities.name)
-  params: {
-    defaults: defaults
-    settings: settings
-  }
-  dependsOn: [
-    groups
-  ]
-}
-
 module clusters './modules/clusters/resources.bicep' = {
-  name: 'Microsoft.Resources.Clusters'
+  name: 'Microsoft.Resources'
   scope: resourceGroup(settings.resourceGroups.clusters.name)
   params: {
     defaults: defaults
     settings: settings
-    identities: identities.outputs.identities
   }
   dependsOn: [
     groups
@@ -44,12 +31,12 @@ module clusters './modules/clusters/resources.bicep' = {
 }
 
 module services './modules/services/resources.bicep' = {
-  name: 'Microsoft.Resources.Services'
+  name: 'Microsoft.Resources'
   scope: resourceGroup(settings.resourceGroups.services.name)
   params: {
     defaults: defaults
     settings: settings
-    identities: identities.outputs.identities
+    clusters: clusters.outputs.clusters
   }
   dependsOn: [
     groups

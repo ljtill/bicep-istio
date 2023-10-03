@@ -2,9 +2,25 @@ using './main.bicep'
 
 param settings = {
   resourceGroups: {
+    clusters: {
+      name: ''
+      location: ''
+      resources: {
+        managedClusters: [
+          {
+            name: ''
+            tags: {}
+            properties: {
+              resourceGroup: ''
+            }
+          }
+        ]
+      }
+      tags: {}
+    }
     services: {
       name: ''
-      location: 'uksouth'
+      location: ''
       resources: {
         containerRegistry: {
           name: ''
@@ -13,35 +29,23 @@ param settings = {
           }
           tags: {}
         }
-      }
-      tags: {}
-    }
-    identities: {
-      name: ''
-      location: 'uksouth'
-      resources: {
-        managedIdentity: {
-          kubernetes: {
-            name: ''
-          }
-          kubelet: {
-            name: ''
-          }
-          script: {
-            name: ''
+        keyVault: {
+          name: ''
+          properties: {
+            sku: {
+              family: 'A'
+              name: 'standard'
+            }
           }
         }
-      }
-    }
-    clusters: {
-      name: ''
-      location: 'uksouth'
-      resources: {
-        containerService: {
+        prometheusWorkspace: {
           name: ''
-          tags: {}
+          properties: {}
+        }
+        grafanaDashboard: {
+          name: ''
           properties: {
-            serviceMesh: 'Istio' // Istio || ASM || None
+            sku: 'Standard'
           }
         }
       }
