@@ -14,9 +14,23 @@ import 'kubernetes@1.0.0' with {
 // Namespace
 resource namespace 'core/Namespace@v1' = {
   metadata: {
-    name: 'apps-podinfo'
+    name: settings.namespace
     labels: {
       'istio.io/rev': 'asm-1-17'
+    }
+  }
+}
+
+// Peer Authentication
+#disable-next-line BCP081
+resource mtls 'security.istio.io/PeerAuthentication@v1beta1' = {
+  metadata: {
+    name: 'default'
+    namespace: settings.namespace
+  }
+  spec: {
+    mtls: {
+      mode: 'STRICT'
     }
   }
 }
@@ -26,7 +40,7 @@ resource namespace 'core/Namespace@v1' = {
 resource gateway 'networking.istio.io/Gateway@v1beta1' = {
   metadata: {
     name: 'podinfo-gateway'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   spec: {
     selector: {
@@ -50,11 +64,11 @@ resource gateway 'networking.istio.io/Gateway@v1beta1' = {
 resource service 'networking.istio.io/VirtualService@v1alpha3' = {
   metadata: {
     name: 'podinfo'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   spec: {
     hosts: [ '*' ]
-    gateways: [ 'podinfo-gateway' ]
+    gateways: [ gateway.metadata.name ]
     http: [
       {
         match: [
@@ -83,7 +97,7 @@ resource service 'networking.istio.io/VirtualService@v1alpha3' = {
 resource account 'core/ServiceAccount@v1' = {
   metadata: {
     name: 'podinfo-reconciler'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
 }
 
@@ -91,7 +105,7 @@ resource account 'core/ServiceAccount@v1' = {
 resource role 'rbac.authorization.k8s.io/Role@v1' = {
   metadata: {
     name: 'podinfo-reconciler'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   rules: [
     {
@@ -106,7 +120,7 @@ resource role 'rbac.authorization.k8s.io/Role@v1' = {
 resource binding 'rbac.authorization.k8s.io/RoleBinding@v1' = {
   metadata: {
     name: 'podinfo-reconciler'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   roleRef: {
     apiGroup: 'rbac.authorization.k8s.io'
@@ -117,7 +131,7 @@ resource binding 'rbac.authorization.k8s.io/RoleBinding@v1' = {
     {
       kind: 'ServiceAccount'
       name: 'podinfo-reconciler'
-      namespace: 'apps-podinfo'
+      namespace: settings.namespace
     }
   ]
 }
@@ -127,7 +141,7 @@ resource binding 'rbac.authorization.k8s.io/RoleBinding@v1' = {
 resource repository 'source.toolkit.fluxcd.io/HelmRepository@v1beta2' = {
   metadata: {
     name: 'podinfo'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   spec: {
     interval: '5m'
@@ -140,7 +154,7 @@ resource repository 'source.toolkit.fluxcd.io/HelmRepository@v1beta2' = {
 resource release 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
   metadata: {
     name: 'podinfo'
-    namespace: 'apps-podinfo'
+    namespace: settings.namespace
   }
   spec: {
     serviceAccountName: 'podinfo-reconciler'
@@ -161,6 +175,14 @@ resource release 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
       }
     }
   }
+}
+
+// ---------
+// Variables
+// ---------
+
+var settings = {
+  namespace: 'apps-podinfo'
 }
 
 // ----------
