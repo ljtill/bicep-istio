@@ -84,7 +84,7 @@ resource grafana 'Microsoft.Dashboard/grafana@2022-08-01' = {
 }
 
 // Data Assocations
-module associations '../clusters/extensions.bicep' = [for (managedCluster, i) in managedClusters: {
+module associations '../clusters/assocations.bicep' = [for (managedCluster, i) in managedClusters: {
   name: 'Microsoft.Insights.${i}'
   scope: resourceGroup(settings.resourceGroups.clusters.name)
   params: {

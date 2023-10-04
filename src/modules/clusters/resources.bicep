@@ -8,7 +8,7 @@ targetScope = 'resourceGroup'
 // Resources
 // ---------
 
-// Kubernetes Service
+// Kubernetes
 resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = [for managedCluster in managedClusters: {
   name: managedCluster.name
   location: resourceGroup().location
@@ -89,6 +89,47 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
       }
     }
   }
+}]
+
+// Flux
+resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01' = [for (managedCluster, i) in managedClusters: {
+  name: 'flux'
+  scope: clusters[i]
+  properties: {
+    extensionType: 'microsoft.flux'
+    autoUpgradeMinorVersion: true
+    releaseTrain: 'Stable'
+    configurationSettings: {
+      'source-controller.enabled': 'true'
+      'helm-controller.enabled': 'true'
+      'kustomize-controller.enabled': 'false'
+      'notification-controller.enabled': 'false'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+    }
+  }
+}]
+
+// -------
+// Modules
+// -------
+
+// Istio
+module istio './manifests/istio.bicep' = [for (managedCluster, i) in managedClusters: {
+  name: 'Kubernetes.Resources.Istio.${i}'
+  params: {
+    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+  }
+  dependsOn: [ extensionsFlux ]
+}]
+
+// Podinfo
+module podinfo './manifests/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
+  name: 'Kubernetes.Resources.Podinfo.${i}'
+  params: {
+    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+  }
+  dependsOn: [ extensionsFlux ]
 }]
 
 // ---------
