@@ -1,77 +1,14 @@
 # Istio
 
-This repository contains the infra-as-code components to quickly scaffold a new
-Azure Kubernetes Service cluster with Istio service mesh.
+This repository contains the infra-as-code components for rapidly provisioning an Azure Kubernetes Service cluster, leveraging Azure Service Mesh (Istio) for managing Ingress & Egress gateways, and mTLS encryption. Additionally, within this cluster, we have implemented the Flux extension for deploying the Podinfo application as a sample use case.
 
 _Please note these artifacts are under development and subject to change._
 
 ---
 
-## Architecture
-
-### Azure
-
-```mermaid
-flowchart LR
-  groups((Resource Groups)) -->
-    clustersResourceGroup[Clusters] -->
-      clustersResources((Resources)) -->
-        kubernetes[Kubernetes Service]
-
-  groups((Resource Groups)) -->
-    servicesResourceGroup[Services] -->
-      servicesResources((Resources))
-
-      servicesResources((Resources)) -->
-        registry[Container Registry]
-      servicesResources((Resources)) -->
-        vault[Key Vault]
-      servicesResources((Resources)) -->
-        grafana[Managed Grafana]
-      servicesResources((Resources)) -->
-        prometheus[Managed Prometheus]
-
-
-```
-
-### Kubernetes
-
-```mermaid
-flowchart LR
-  kube((Kubernetes)) -->
-    ns((Namespaces)) --> aks-istio-system
-
-      aks-istio-system -->
-        pods((Pods)) --> istiod-asm-1-17-abc
-        pods((Pods)) --> istiod-asm-1-17-xyz
-
-      aks-istio-system -->
-        svcs((Services)) --> service[istiod-asm-1-17]
-
-      aks-istio-system -->
-        deploy((Deployments)) --> deployment[istiod-asm-1-17]
-
-      aks-istio-system -->
-        rs((ReplicaSets)) --> replicaset[istiod-asm-1-17-xxx]
-
-      aks-istio-system -->
-        as((PodAutoscalers)) --> autoscaler[istiod-asm-1-17]
-
-    ns((Namespaces)) --> aks-istio-ingress
-    ns((Namespaces)) --> aks-istio-egress
-
-  kube((Kubernetes)) -->
-    node((Nodes)) --> aks-system-xxx
-    node((Nodes)) --> aks-user-xxx
-```
-
----
-
 ## Getting Started
 
-```bash
-az stack sub list
-```
+Before creating the Deployment Stack, the Bicep parameter files need to be updated (`src/main.bicepparam`) with environment specific values.
 
 ```bash
 az stack sub create \
@@ -90,3 +27,49 @@ az stack sub delete \
   --delete-all \
   --yes
 ```
+---
+
+## Architecture
+
+### Azure
+
+```mermaid
+flowchart TD
+  kubernetes(Kubernetes)
+
+  kubernetes -->
+  registry(Container Registry)
+
+  kubernetes -->
+  vault(Key Vault)
+
+  kubernetes -->
+  identity(Managed Identity)
+
+  kubernetes -->
+  prometheus(Prometheus)
+
+  kubernetes -->
+  grafana(Grafana)
+```
+
+---
+
+### Kubernetes
+
+```mermaid
+flowchart TD
+  Kubernetes --> Istio
+    --> namespaces[
+      aks-istio-config
+      aks-istio-ingress
+      aks-istio-egress
+      aks-istio-system
+    ]
+
+  Kubernetes --> Flux
+    --> flux-system
+  Kubernetes --> Podinfo
+    --> apps-podinfo
+```
+git st
