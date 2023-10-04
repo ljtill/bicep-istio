@@ -50,7 +50,7 @@ resource binding 'rbac.authorization.k8s.io/RoleBinding@v1' = {
   roleRef: {
     apiGroup: 'rbac.authorization.k8s.io'
     kind: 'Role'
-    name: 'webapp-reconciler'
+    name: 'podinfo-reconciler'
   }
   subjects: [
     {
