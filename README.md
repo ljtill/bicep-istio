@@ -60,13 +60,20 @@ flowchart TD
 ```mermaid
 flowchart TD
   Kubernetes --> Istio
-    --> namespaces[
+    --> istio["
       aks-istio-config
       aks-istio-ingress
       aks-istio-egress
       aks-istio-system
-    ]
+      "]
 
-  Kubernetes --> Flux --> flux-system
-  Kubernetes --> Podinfo --> apps-podinfo
+  Kubernetes --> Flux
+    --> flux["
+      flux-system
+      "]
+
+  Kubernetes --> Podinfo
+    --> pod["
+      apps-podinfo
+      "]
 ```
