@@ -15,6 +15,67 @@ import 'kubernetes@1.0.0' with {
 resource namespace 'core/Namespace@v1' = {
   metadata: {
     name: 'apps-podinfo'
+    labels: {
+      'istio.io/rev': 'asm-1-17'
+    }
+  }
+}
+
+// Ingress Gateway
+#disable-next-line BCP081
+resource gateway 'networking.istio.io/Gateway@v1beta1' = {
+  metadata: {
+    name: 'podinfo-gateway'
+    namespace: 'apps-podinfo'
+  }
+  spec: {
+    selector: {
+      istio: 'aks-istio-ingressgateway-external'
+    }
+    servers: [
+      {
+        port: {
+          name: 'http'
+          protocol: 'HTTP'
+          number: 80
+        }
+        hosts: [ '*' ]
+      }
+    ]
+  }
+}
+
+// Virtual Service
+#disable-next-line BCP081
+resource service 'networking.istio.io/VirtualService@v1alpha3' = {
+  metadata: {
+    name: 'podinfo'
+    namespace: 'apps-podinfo'
+  }
+  spec: {
+    hosts: [ '*' ]
+    gateways: [ 'podinfo-gateway' ]
+    http: [
+      {
+        match: [
+          {
+            uri: {
+              exact: '/'
+            }
+          }
+        ]
+        route: [
+          {
+            destination: {
+              host: 'podinfo'
+              port: {
+                number: 9898
+              }
+            }
+          }
+        ]
+      }
+    ]
   }
 }
 
