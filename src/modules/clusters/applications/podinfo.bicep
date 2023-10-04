@@ -74,7 +74,7 @@ resource service 'networking.istio.io/VirtualService@v1alpha3' = {
         match: [
           {
             uri: {
-              exact: '/'
+              prefix: '/'
             }
           }
         ]
