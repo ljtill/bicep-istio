@@ -67,9 +67,6 @@ flowchart TD
       aks-istio-system
     ]
 
-  Kubernetes --> Flux
-    --> flux-system
-  Kubernetes --> Podinfo
-    --> apps-podinfo
+  Kubernetes --> Flux --> flux-system
+  Kubernetes --> Podinfo --> apps-podinfo
 ```
-git st
