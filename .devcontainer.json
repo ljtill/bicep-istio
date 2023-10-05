@@ -5,9 +5,12 @@
         "ghcr.io/devcontainers/features/azure-cli:1": {
             "installBicep": true,
             "extensions": [
-                "aks-preview"
+                "aks-preview",
+                "k8s-extension",
+                "k8s-configuration"
             ]
         },
+        "ghcr.io/ljtill/features/flux:1": {},
         "ghcr.io/ljtill/features/helm:1": {},
         "ghcr.io/ljtill/features/kubectl:1": {},
         "ghcr.io/ljtill/features/istioctl:1": {}
@@ -15,6 +18,7 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "bierner.markdown-mermaid",
                 "ms-azuretools.vscode-bicep"
             ]
         }
