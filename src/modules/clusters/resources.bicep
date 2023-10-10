@@ -27,15 +27,12 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
         name: 'system'
         count: 3
         vmSize: 'Standard_D4ds_v5'
-        enableAutoScaling: false
+        enableAutoScaling: true
+        minCount: 1
+        maxCount: 5
         osType: 'Linux'
         mode: 'System'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
-        tags: {}
+        availabilityZones: [ '1', '2', '3' ]
       }
       {
         name: 'user'
@@ -46,12 +43,7 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
         maxCount: 20
         osType: 'Linux'
         mode: 'User'
-        availabilityZones: [
-          '1'
-          '2'
-          '3'
-        ]
-        tags: {}
+        availabilityZones: [ '1', '2', '3' ]
       }
     ]
     autoUpgradeProfile: {
@@ -60,10 +52,6 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
     azureMonitorProfile: {
       metrics: {
         enabled: true
-        kubeStateMetrics: {
-          metricLabelsAllowlist: ''
-          metricAnnotationsAllowList: ''
-        }
       }
     }
     addonProfiles: {
@@ -103,7 +91,7 @@ resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01
       'source-controller.enabled': 'true'
       'helm-controller.enabled': 'true'
       'kustomize-controller.enabled': 'false'
-      'notification-controller.enabled': 'false'
+      'notification-controller.enabled': 'true'
       'image-automation-controller.enabled': 'false'
       'image-reflector-controller.enabled': 'false'
     }
@@ -115,7 +103,7 @@ resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01
 // -------
 
 // Podinfo
-module podinfo './applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
+module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
   name: 'Kubernetes.Applications.Podinfo.${i}'
   params: {
     kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
