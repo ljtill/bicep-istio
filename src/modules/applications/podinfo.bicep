@@ -106,6 +106,7 @@ resource frontend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
       }
     }
     values: {
+      logLevel: 'debug'
       backend: 'http://podinfo-backend.apps-podinfo:9898/echo'
     }
   }
@@ -119,7 +120,7 @@ resource backend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
     namespace: settings.namespace
   }
   spec: {
-    serviceAccountName: 'podinfo-reconciler'
+    serviceAccountName: 'fluxcd-reconciler'
     releaseName: 'podinfo-backend'
     interval: '50m'
     chart: {
@@ -130,6 +131,9 @@ resource backend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
           name: 'podinfo'
         }
       }
+    }
+    values: {
+      logLevel: 'debug'
     }
   }
   dependsOn: [ namespace ]
