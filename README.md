@@ -8,7 +8,7 @@ _Please note these artifacts are under development and subject to change._
 
 ## Getting Started
 
-Before creating the Deployment Stack, the Bicep parameter files need to be updated (`src/main.bicepparam`).
+Before creating the Deployment Stack, the Bicep parameter file needs to be updated (`src/main.bicepparam`).
 
 ```bash
 az stack sub create \
