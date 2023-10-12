@@ -9,7 +9,7 @@ targetScope = 'resourceGroup'
 // ---------
 
 // Kubernetes
-resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = [for managedCluster in managedClusters: {
+resource clusters 'Microsoft.ContainerService/managedClusters@2023-08-02-preview' = [for managedCluster in managedClusters: {
   name: managedCluster.name
   location: resourceGroup().location
   sku: {
@@ -71,6 +71,11 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
             {
               enabled: true
               mode: 'External'
+            }
+          ]
+          egressGateways: [
+            {
+              enabled: true
             }
           ]
         }
