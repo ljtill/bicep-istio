@@ -26,7 +26,7 @@ resource namespace 'core/Namespace@v1' = {
 // Service Account
 resource account 'core/ServiceAccount@v1' = {
   metadata: {
-    name: 'fluxcd-reconciler'
+    name: 'flux-reconciler'
     namespace: settings.namespace
   }
   dependsOn: [ namespace ]
@@ -35,7 +35,7 @@ resource account 'core/ServiceAccount@v1' = {
 // Role
 resource role 'rbac.authorization.k8s.io/Role@v1' = {
   metadata: {
-    name: 'fluxcd-reconciler'
+    name: 'flux-reconciler'
     namespace: settings.namespace
   }
   rules: [
@@ -51,18 +51,18 @@ resource role 'rbac.authorization.k8s.io/Role@v1' = {
 // Role Binding
 resource binding 'rbac.authorization.k8s.io/RoleBinding@v1' = {
   metadata: {
-    name: 'fluxcd-reconciler'
+    name: 'flux-reconciler'
     namespace: settings.namespace
   }
   roleRef: {
     apiGroup: 'rbac.authorization.k8s.io'
     kind: 'Role'
-    name: 'fluxcd-reconciler'
+    name: 'flux-reconciler'
   }
   subjects: [
     {
       kind: 'ServiceAccount'
-      name: 'fluxcd-reconciler'
+      name: 'flux-reconciler'
       namespace: settings.namespace
     }
   ]
