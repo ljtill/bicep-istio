@@ -108,13 +108,13 @@ resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01
 // -------
 
 // Podinfo
-// module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
-//   name: 'Kubernetes.Applications.Podinfo.${i}'
-//   params: {
-//     kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
-//   }
-//   dependsOn: [ extensionsFlux ]
-// }]
+module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
+  name: 'Kubernetes.Applications.Podinfo.${i}'
+  params: {
+    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+  }
+  dependsOn: [ extensionsFlux ]
+}]
 
 // ---------
 // Variables
