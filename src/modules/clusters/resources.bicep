@@ -9,7 +9,7 @@ targetScope = 'resourceGroup'
 // ---------
 
 // Kubernetes
-resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview' = [for managedCluster in managedClusters: {
+resource clusters 'Microsoft.ContainerService/managedClusters@2023-08-02-preview' = [for managedCluster in managedClusters: {
   name: managedCluster.name
   location: resourceGroup().location
   sku: {
@@ -73,6 +73,11 @@ resource clusters 'Microsoft.ContainerService/managedClusters@2023-07-02-preview
               mode: 'External'
             }
           ]
+          egressGateways: [
+            {
+              enabled: true
+            }
+          ]
         }
       }
     }
@@ -103,13 +108,13 @@ resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01
 // -------
 
 // Podinfo
-module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
-  name: 'Kubernetes.Applications.Podinfo.${i}'
-  params: {
-    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
-  }
-  dependsOn: [ extensionsFlux ]
-}]
+// module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
+//   name: 'Kubernetes.Applications.Podinfo.${i}'
+//   params: {
+//     kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+//   }
+//   dependsOn: [ extensionsFlux ]
+// }]
 
 // ---------
 // Variables
