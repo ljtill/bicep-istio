@@ -61,10 +61,9 @@ flowchart TD
 flowchart TD
   Kubernetes --> Istio
     --> istio["
-      aks-istio-config
+      aks-istio-system
       aks-istio-ingress
       aks-istio-egress
-      aks-istio-system
       "]
 
   Kubernetes --> Flux
