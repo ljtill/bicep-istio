@@ -68,18 +68,13 @@ flowchart LR
     user-->ipAddress(Public IP)-->loadBalancer(Load Balancer)
   end
 
-  subgraph kubernetesA[Kubernetes]
+  subgraph kubernetes[Kubernetes]
     direction LR
     loadBalancer-->ingress(Ingress Gateway)
+
+    subgraph istio[Istio]
+      ingress-->gateway(Gateway)-->service(Virtual Service)-->pod(Pod)
+    end
   end
 
-  subgraph Istio
-    direction LR
-    ingress-->gateway(Gateway)-->service(Virtual Service)
-  end
-
-  subgraph kubernetesB[Kubernetes]
-    direction LR
-    service-->pods(Pods)
-  end
 ```
