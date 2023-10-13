@@ -31,7 +31,7 @@ az stack sub delete \
 
 ## Architecture
 
-### Azure
+### Platform Resources
 
 ```mermaid
 flowchart TD
@@ -55,24 +55,31 @@ flowchart TD
 
 ---
 
-### Kubernetes
+### Traffic Flow
 
 ```mermaid
-flowchart TD
-  Kubernetes --> Istio
-    --> istio["
-      aks-istio-system
-      aks-istio-ingress
-      aks-istio-egress
-      "]
+flowchart LR
+  subgraph External
+    user(User)
+  end
 
-  Kubernetes --> Flux
-    --> flux["
-      flux-system
-      "]
+  subgraph Azure
+    direction LR
+    user-->ipAddress(Public IP)-->loadBalancer(Load Balancer)
+  end
 
-  Kubernetes --> Podinfo
-    --> pod["
-      apps-podinfo
-      "]
+  subgraph kubernetesA[Kubernetes]
+    direction LR
+    loadBalancer-->ingress(Ingress Gateway)
+  end
+
+  subgraph Istio
+    direction LR
+    ingress-->gateway(Gateway)-->service(Virtual Service)
+  end
+
+  subgraph kubernetesB[Kubernetes]
+    direction LR
+    service-->pods(Pods)
+  end
 ```
