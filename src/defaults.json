@@ -578,5 +578,18 @@
                 "expression": "sum without (device) (  rate(node_network_transmit_drop_total{job=\"node\", device!=\"lo\"}[5m]))"
             }
         ]
+    },
+    "metricsSettings": {
+        "schema-version": "v1",
+        "config-version": "ver1",
+        "prometheus-collector-settings": "cluster_alias = \"\"",
+        "default-scrape-settings-enabled": "kubelet = true\ncoredns = false\ncadvisor = true\nkubeproxy = false\napiserver = false\nkubestate = true\nnodeexporter = true\nwindowsexporter = false\nwindowskubeproxy = false\nkappiebasic = true\nprometheuscollectorhealth = false",
+        "pod-annotation-based-scraping": "podannotationnamespaceregex = \"\"",
+        "default-targets-metrics-keep-list": "kubelet = \"\"\ncoredns = \"\"\ncadvisor = \"\"\nkubeproxy = \"\"\napiserver = \"\"\nkubestate = \"\"\nnodeexporter = \"\"\nwindowsexporter = \"\"\nwindowskubeproxy = \"\"\npodannotations = \"\"\nkappiebasic = \"\"\nminimalingestionprofile = true",
+        "default-targets-scrape-interval-settings": "kubelet = \"30s\"\ncoredns = \"30s\"\ncadvisor = \"30s\"\nkubeproxy = \"30s\"\napiserver = \"30s\"\nkubestate = \"30s\"\nnodeexporter = \"30s\"\nwindowsexporter = \"30s\"\nwindowskubeproxy = \"30s\"\nkappiebasic = \"30s\"\nprometheuscollectorhealth = \"30s\"\npodannotations = \"30s\"",
+        "debug-mode": "enabled = false"
+    },
+    "metricsConfig": {
+        "prometheus-config": "global:\n  scrape_interval: 15s\nscrape_configs:\n- job_name: <your scrape job here>\n- job_name: <your scrape job here>\n",
     }
 }
