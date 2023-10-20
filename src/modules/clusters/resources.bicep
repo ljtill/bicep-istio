@@ -107,13 +107,30 @@ resource extensionsFlux 'Microsoft.KubernetesConfiguration/extensions@2023-05-01
 // Modules
 // -------
 
-// Podinfo
-module podinfo '../applications/podinfo.bicep' = [for (managedCluster, i) in managedClusters: {
+module podinfo './manifests/podinfo/resources.bicep' = [for (managedCluster, i) in managedClusters: {
   name: 'Kubernetes.Applications.Podinfo.${i}'
   params: {
     kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
   }
   dependsOn: [ extensionsFlux ]
+}]
+
+module istio './manifests/istio/resources.bicep' = [for (managedCluster, i) in managedClusters: {
+  name: 'Kubernetes.Istio.${i}'
+  params: {
+    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+  }
+  dependsOn: [
+    podinfo
+  ]
+}]
+
+module prometheus './manifests/prometheus/resources.bicep' = [for (managedCluster, i) in managedClusters: {
+  name: 'Kubernetes.Metrics.${i}'
+  params: {
+    kubeConfig: clusters[i].listClusterAdminCredential().kubeconfigs[0].value
+    defaults: defaults
+  }
 }]
 
 // ---------

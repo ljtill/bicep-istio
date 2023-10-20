@@ -93,7 +93,7 @@ resource frontend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
     namespace: settings.namespace
   }
   spec: {
-    serviceAccountName: 'fluxcd-reconciler'
+    serviceAccountName: 'flux-reconciler'
     releaseName: 'podinfo-frontend'
     interval: '50m'
     chart: {
@@ -120,7 +120,7 @@ resource backend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
     namespace: settings.namespace
   }
   spec: {
-    serviceAccountName: 'fluxcd-reconciler'
+    serviceAccountName: 'flux-reconciler'
     releaseName: 'podinfo-backend'
     interval: '50m'
     chart: {
@@ -135,83 +135,6 @@ resource backend 'helm.toolkit.fluxcd.io/HelmRelease@v2beta1' = {
     values: {
       logLevel: 'debug'
     }
-  }
-  dependsOn: [ namespace ]
-}
-
-// Istio
-
-// Peer Authentication
-#disable-next-line BCP081
-resource authentication 'security.istio.io/PeerAuthentication@v1beta1' = {
-  metadata: {
-    name: 'podinfo'
-    namespace: settings.namespace
-  }
-  spec: {
-    mtls: {
-      mode: 'STRICT'
-    }
-  }
-  dependsOn: [ namespace ]
-}
-
-// Ingress Gateway
-#disable-next-line BCP081
-resource gateway 'networking.istio.io/Gateway@v1beta1' = {
-  metadata: {
-    name: 'podinfo-gateway'
-    namespace: settings.namespace
-  }
-  spec: {
-    selector: {
-      istio: 'aks-istio-ingressgateway-external'
-    }
-    servers: [
-      {
-        port: {
-          name: 'http'
-          protocol: 'HTTP'
-          number: 80
-        }
-        hosts: [ '*' ]
-      }
-    ]
-  }
-  dependsOn: [ namespace ]
-}
-
-// Virtual Service
-#disable-next-line BCP081
-resource service 'networking.istio.io/VirtualService@v1beta1' = {
-  metadata: {
-    name: 'podinfo'
-    namespace: settings.namespace
-  }
-  spec: {
-    hosts: [ '*' ]
-    gateways: [ gateway.metadata.name ]
-    http: [
-      {
-        match: [
-          {
-            uri: {
-              prefix: '/'
-            }
-          }
-        ]
-        route: [
-          {
-            destination: {
-              host: 'podinfo-frontend'
-              port: {
-                number: 9898
-              }
-            }
-          }
-        ]
-      }
-    ]
   }
   dependsOn: [ namespace ]
 }
