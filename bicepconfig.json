@@ -17,7 +17,9 @@
     "currentProfile": "AzureCloud"
   },
   "experimentalFeaturesEnabled": {
-    "extensibility": true
+    "extensibility": true,
+    "compileTimeImports": true,
+    "userDefinedFunctions": true
   },
   "moduleAliases": {
     "ts": {},

@@ -1,8 +1,8 @@
-// -------
-// Imports
-// -------
+// ---------
+// Providers
+// ---------
 
-import 'kubernetes@1.0.0' with {
+provider 'kubernetes@1.0.0' with {
   kubeConfig: kubeConfig
   namespace: 'default'
 }
@@ -15,7 +15,7 @@ import 'kubernetes@1.0.0' with {
 #disable-next-line BCP081
 resource authentication 'security.istio.io/PeerAuthentication@v1beta1' = {
   metadata: {
-    name: 'podinfo'
+    name: settings.name
     namespace: settings.namespace
   }
   spec: {
@@ -29,7 +29,7 @@ resource authentication 'security.istio.io/PeerAuthentication@v1beta1' = {
 #disable-next-line BCP081
 resource gateway 'networking.istio.io/Gateway@v1beta1' = {
   metadata: {
-    name: 'podinfo-gateway'
+    name: settings.name
     namespace: settings.namespace
   }
   spec: {
@@ -53,7 +53,7 @@ resource gateway 'networking.istio.io/Gateway@v1beta1' = {
 #disable-next-line BCP081
 resource service 'networking.istio.io/VirtualService@v1beta1' = {
   metadata: {
-    name: 'podinfo'
+    name: settings.name
     namespace: settings.namespace
   }
   spec: {
@@ -71,7 +71,7 @@ resource service 'networking.istio.io/VirtualService@v1beta1' = {
         route: [
           {
             destination: {
-              host: 'podinfo-frontend'
+              host: settings.name
               port: {
                 number: 9898
               }
@@ -88,6 +88,7 @@ resource service 'networking.istio.io/VirtualService@v1beta1' = {
 // ---------
 
 var settings = {
+  name: 'podinfo'
   namespace: 'apps-podinfo'
 }
 
