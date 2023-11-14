@@ -10,15 +10,16 @@
                 "k8s-configuration"
             ]
         },
-        "ghcr.io/ljtill/features/flux:1": {},
-        "ghcr.io/ljtill/features/helm:1": {},
-        "ghcr.io/ljtill/features/kubectl:1": {},
+        "ghcr.io/ljtill/features/kubectl:1": {
+            "kubectx": true
+        },
         "ghcr.io/ljtill/features/istioctl:1": {}
     },
     "customizations": {
         "vscode": {
             "extensions": [
                 "bierner.markdown-mermaid",
+                "ms-vscode.azure-account",
                 "ms-azuretools.vscode-bicep"
             ]
         }
