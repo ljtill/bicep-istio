@@ -1,6 +1,6 @@
 # Istio
 
-This repository contains the infra-as-code components for rapidly provisioning an Azure Kubernetes Service cluster, leveraging Azure Service Mesh (Istio) for managing Ingress & Egress gateways, and mTLS encryption. Additionally, within this cluster, we have implemented the Flux extension for deploying the Podinfo application as a sample use case.
+This repository contains the infra-as-code components for rapidly provisioning an Azure Kubernetes Service cluster, leveraging Azure Service Mesh (Istio) for managing Ingress & Egress gateways, and mTLS encryption. Additionally, within this cluster, we have implemented the Podinfo application as a sample use case.
 
 _Please note these artifacts are under development and subject to change._
 
@@ -27,6 +27,7 @@ az stack sub delete \
   --delete-all \
   --yes
 ```
+
 ---
 
 ## Architecture
