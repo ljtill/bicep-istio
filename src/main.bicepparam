@@ -3,50 +3,31 @@ using './main.bicep'
 param settings = {
   resourceGroups: {
     clusters: {
-      name: ''
       location: ''
+      name: ''
       resources: {
-        managedClusters: [
-          {
-            name: ''
-            tags: {}
-            properties: {
-              resourceGroup: ''
-            }
-          }
-        ]
+        managedCluster: {
+          name: ''
+        }
       }
       tags: {}
     }
     services: {
-      name: ''
       location: ''
+      name: ''
       resources: {
         containerRegistry: {
           name: ''
-          properties: {
-            sku: 'Standard'
-          }
-          tags: {}
-        }
-        keyVault: {
-          name: ''
-          properties: {
-            sku: {
-              family: 'A'
-              name: 'standard'
-            }
-          }
-        }
-        prometheusWorkspace: {
-          name: ''
-          properties: {}
         }
         grafanaDashboard: {
           name: ''
-          properties: {
-            sku: 'Standard'
-          }
+          assignments: []
+        }
+        keyVault: {
+          name: ''
+        }
+        prometheusWorkspace: {
+          name: ''
         }
       }
       tags: {}

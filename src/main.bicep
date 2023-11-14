@@ -1,3 +1,10 @@
+// -------
+// Imports
+// -------
+
+import { Defaults } from './types/defaults.bicep'
+import { Settings } from './types/settings.bicep'
+
 // ------
 // Scopes
 // ------
@@ -8,38 +15,24 @@ targetScope = 'subscription'
 // Modules
 // -------
 
-// Resource Groups
-module groups './modules/groups.bicep' = {
-  name: 'Microsoft.ResourceGroups'
+module azure './modules/azure/resources.bicep' = {
+  name: 'Microsoft.Resources'
+  scope: subscription()
   params: {
     defaults: defaults
     settings: settings
   }
 }
 
-// Resources
-module clusters './modules/clusters/resources.bicep' = {
-  name: 'Microsoft.Resources'
-  scope: resourceGroup(settings.resourceGroups.clusters.name)
+module kubernetes './modules/kubernetes/resources.bicep' = {
+  name: 'Kubernetes.Resources'
+  scope: subscription()
   params: {
     defaults: defaults
     settings: settings
   }
   dependsOn: [
-    groups
-  ]
-}
-
-module services './modules/services/resources.bicep' = {
-  name: 'Microsoft.Resources'
-  scope: resourceGroup(settings.resourceGroups.services.name)
-  params: {
-    defaults: defaults
-    settings: settings
-    clusters: clusters.outputs.clusters
-  }
-  dependsOn: [
-    groups
+    azure
   ]
 }
 
@@ -53,4 +46,4 @@ var defaults = loadJsonContent('defaults.json')
 // Parameters
 // ----------
 
-param settings object
+param settings Settings
