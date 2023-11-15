@@ -1,0 +1,46 @@
+schema-version: v1
+config-version: ver1
+prometheus-collector-settings: |-
+  cluster_alias = ""
+default-scrape-settings-enabled: |-
+  kubelet = true
+  coredns = false
+  cadvisor = true
+  kubeproxy = false
+  apiserver = false
+  kubestate = true
+  nodeexporter = true
+  windowsexporter = false
+  windowskubeproxy = false
+  kappiebasic = true
+  prometheuscollectorhealth = false
+pod-annotation-based-scraping: |-
+  podannotationnamespaceregex = ".*"
+default-targets-metrics-keep-list: |-
+  kubelet = ""
+  coredns = ""
+  cadvisor = ""
+  kubeproxy = ""
+  apiserver = ""
+  kubestate = ""
+  nodeexporter = ""
+  windowsexporter = ""
+  windowskubeproxy = ""
+  podannotations = ""
+  kappiebasic = ""
+  minimalingestionprofile = true
+default-targets-scrape-interval-settings: |-
+  kubelet = "30s"
+  coredns = "30s"
+  cadvisor = "30s"
+  kubeproxy = "30s"
+  apiserver = "30s"
+  kubestate = "30s"
+  nodeexporter = "30s"
+  windowsexporter = "30s"
+  windowskubeproxy = "30s"
+  kappiebasic = "30s"
+  prometheuscollectorhealth = "30s"
+  podannotations = "30s"
+debug-mode: |-
+  enabled = false

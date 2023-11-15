@@ -5,5 +5,9 @@
 @export()
 type Defaults = {
   definitionIds: object
-  recordingRules: object
+  ruleGroups: {
+    name: string
+    description: string
+    rules: array
+  }[]
 }

@@ -46,29 +46,17 @@ resource workspace 'Microsoft.Monitor/accounts@2023-04-03' = {
 }
 
 // Rule Groups
-resource kubernetesRuleGroup 'Microsoft.AlertsManagement/prometheusRuleGroups@2023-03-01' = {
-  name: 'Kubernetes'
+resource ruleGroups 'Microsoft.AlertsManagement/prometheusRuleGroups@2023-03-01' = [for ruleGroup in defaults.ruleGroups: {
+  name: '${settings.resourceGroups.services.resources.prometheusWorkspace.name} (${ruleGroup.name})'
   location: settings.resourceGroups.services.location
   properties: {
-    description: 'Kubernetes Recording Rules RuleGroup - 0.1'
+    description: ruleGroup.description
     scopes: [ workspace.id ]
     enabled: true
     interval: 'PT1M'
-    rules: defaults.recordingRules.kubernetes
+    rules: ruleGroup.rules
   }
-}
-
-resource nodeRuleGroup 'Microsoft.AlertsManagement/prometheusRuleGroups@2023-03-01' = {
-  name: 'Node'
-  location: settings.resourceGroups.services.location
-  properties: {
-    description: 'Node Recording Rules RuleGroup - 0.1'
-    scopes: [ workspace.id ]
-    enabled: true
-    interval: 'PT1M'
-    rules: defaults.recordingRules.node
-  }
-}
+}]
 
 // Grafana Dashboard
 resource grafana 'Microsoft.Dashboard/grafana@2022-10-01-preview' = {
