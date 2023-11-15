@@ -15,7 +15,7 @@ default-scrape-settings-enabled: |-
   kappiebasic = true
   prometheuscollectorhealth = false
 pod-annotation-based-scraping: |-
-  podannotationnamespaceregex = "aks-istio-(system|ingress|egress)"
+  podannotationnamespaceregex = "aks-istio-.*"
 default-targets-metrics-keep-list: |-
   kubelet = ""
   coredns = ""
