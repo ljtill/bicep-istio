@@ -39,13 +39,16 @@ resource cluster 'Microsoft.ContainerService/managedClusters@2023-09-02-preview'
         osType: 'Linux'
         mode: 'System'
         availabilityZones: [ '1', '2', '3' ]
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
       }
       {
         name: 'user'
-        count: 3
+        count: 5
         vmSize: 'Standard_D8ds_v5'
         enableAutoScaling: true
-        minCount: 1
+        minCount: 3
         maxCount: 20
         osType: 'Linux'
         mode: 'User'
